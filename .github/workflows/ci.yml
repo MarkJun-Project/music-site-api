@@ -1,0 +1,54 @@
+name: PR
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ opened, synchronize, edited ]
+
+permissions:
+  contents: read
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Mssql
+        uses: potatoqualitee/mssqlsuite@v1.7
+        with:
+          install: sqlengine, sqlpackage
+
+      - name: Run init script
+        run: |
+          sqlcmd -S localhost -U sa -P "dbatools.I0" -d tempdb -i init.sql
+
+      - name: Change sa password
+        run: |
+          sqlcmd -S localhost -U sa -P "dbatools.I0" -Q "ALTER LOGIN sa WITH PASSWORD = 'testtest123!'"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+
+      - name: MigrateDatabase
+        run: ./gradlew migrateDatabase
+        shell: bash
+
+      - name: Common Test
+        run: ./gradlew common:test --info --fail-fast
+        shell: bash
+
+      - name: API Test
+        run: ./gradlew api:test --info --fail-fast
+        shell: bash
+
+      - name: ADMIN Test
+        run: ./gradlew admin:test --info --fail-fast
+        shell: bash

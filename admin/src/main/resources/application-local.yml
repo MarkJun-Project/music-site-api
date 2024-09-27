@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: ${db.url:jdbc:p6spy:sqlserver://112.2.2.2;databaseName=test;encrypt=true;trustServerCertificate=true;}
+    username: ${db.username:username}
+    password: ${db.password:password}
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+        format_sql: false
+        default_batch_fetch_size: 100
+        javax:
+          persistence:
+            validation:
+              mode: none
+        show-sql: true
+
+oauth2:
+  frontUri: ${FRONT_URI:http://localhost:3000/token}
+
+jwt:
+  secretKey: ${JWT_SECRET_KEY:keykeykeykeykeykeykeykeykeykeykeykeykeykeykeykeykeykeykeykeykeykey}
+  accessTokenExpireTime: 600000
+  refreshTokenExpireTime: 600000

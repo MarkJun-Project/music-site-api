@@ -1,0 +1,5 @@
+rootProject.name = 'music-site-api'
+include 'common'
+include 'api'
+include 'admin'
+include 'integration'
