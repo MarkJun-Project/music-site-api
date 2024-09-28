@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: ${db.url:jdbc:p6spy:sqlserver://112.2.2.2;databaseName=test;encrypt=true;trustServerCertificate=true;}
-    username: ${db.username:username}
-    password: ${db.password:password}
+    url: ${db.url:jdbc:p6spy:sqlserver://localhost:1433;databaseName=MUSIC_SITE;encrypt=true;trustServerCertificate=true;}
+    username: ${db.username:sa}
+    password: ${db.password:testtest123!}
 
   jpa:
     properties:
@@ -16,6 +16,8 @@ spring:
             validation:
               mode: none
         show-sql: true
+    hibernate:
+      ddl-auto: create
 
 oauth2:
   frontUri: ${FRONT_URI:http://localhost:3000/token}
