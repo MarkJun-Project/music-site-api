@@ -1,11 +1,9 @@
 package com.music.common.user.domain;
 
+import com.music.common.attachment.domain.Attachment;
 import com.music.common.code.SocialType;
 import com.music.common.support.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +16,7 @@ import static java.util.Objects.nonNull;
 
 @Getter
 @Entity
+@Table(name = "USERS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
@@ -40,6 +39,10 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", length = 10, nullable = false)
     private UserStatus status = UserStatus.CREATED;
+
+    @JoinColumn(name = "PROFILE_IMAGE_ID")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Attachment profileImage;
 
     private User(String socialId, SocialType socialType, String email, String nickname) {
         this.socialId = socialId;
