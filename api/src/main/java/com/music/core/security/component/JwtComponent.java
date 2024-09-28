@@ -27,8 +27,8 @@ public class JwtComponent {
         val expiration = new Date(now.getTime() + jwtProperties.getTokenExpireTime(type));
 
         return Jwts.builder()
-                .setSubject("CodeLap User " + type.name() + " Api Token")
-                .setIssuer("CodeLap")
+                .setSubject("MusicSite User " + type.name() + " Api Token")
+                .setIssuer("MusicSite")
                 .setIssuedAt(now)
                 .setId(id.toString())
                 .setExpiration(expiration)

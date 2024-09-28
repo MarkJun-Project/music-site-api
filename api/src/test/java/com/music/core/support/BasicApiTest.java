@@ -1,8 +1,11 @@
 package com.music.core.support;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.music.common.user.domain.User;
+import com.music.common.user.domain.UserRepository;
 import com.music.core.security.component.JwtComponent;
 import com.music.core.security.user.DefaultAuthenticationUser;
+import fixtures.UserFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +38,8 @@ public abstract class BasicApiTest {
     @Autowired
     protected ObjectMapper objectMapper;
 
-//    @Autowired
-//    private MemberRepository memberRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private JwtComponent jwtComponent;
@@ -50,27 +53,27 @@ public abstract class BasicApiTest {
                 .build();
     }
 
-//    protected Member prepareLoggedInActiveUser() {
-//        return prepareLoggedInUserInternal(createMember());
-//    }
-//
-//    protected Member prepareLoggedInUser() {
-//        return prepareLoggedInUserInternal(createMember());
-//    }
-//
-//    private Member prepareLoggedInUserInternal(Member member) {
-//        member = memberRepository.save(member);
-//
-//        memberRepository.flush();
-//
-//        login(member);
-//
-//        return member;
-//    }
-//
-//    protected void login(Member member) {
-//        login(member.getMemberCode());
-//    }
+    protected User prepareLoggedInActiveUser() {
+        return prepareLoggedInUserInternal(UserFixture.create());
+    }
+
+    protected User prepareLoggedInUser() {
+        return prepareLoggedInUserInternal(UserFixture.create());
+    }
+
+    private User prepareLoggedInUserInternal(User user) {
+        user = userRepository.save(user);
+
+        userRepository.flush();
+
+        login(user);
+
+        return user;
+    }
+
+    protected void login(User user) {
+        login(user.getId());
+    }
 
     private void login(Long id) {
         DefaultAuthenticationUser user = (DefaultAuthenticationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
