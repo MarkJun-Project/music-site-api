@@ -25,6 +25,9 @@ public class Follow extends BaseEntity {
     private User followee; // 팔로우된 유저
 
     private Follow(User follower, User followee) {
+        follower.addFollowing(this);
+        followee.addFollowers(this);
+
         this.follower = follower;
         this.followee = followee;
     }

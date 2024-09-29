@@ -68,4 +68,12 @@ public class User extends BaseEntity {
 
         return new User(socialId, socialType, email, nickname);
     }
+
+    public void addFollowing(Follow follower) {
+        this.following.add(follower);
+    }
+
+    public void addFollowers(Follow followee) {
+        this.followers.add(followee);
+    }
 }
