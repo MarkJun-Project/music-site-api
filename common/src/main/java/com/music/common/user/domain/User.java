@@ -2,6 +2,7 @@ package com.music.common.user.domain;
 
 import com.music.common.attachment.domain.Attachment;
 import com.music.common.code.SocialType;
+import com.music.common.follow.domain.Follow;
 import com.music.common.support.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.music.common.support.Preconditions.require;
 import static java.util.Objects.nonNull;
@@ -43,6 +46,12 @@ public class User extends BaseEntity {
     @JoinColumn(name = "PROFILE_IMAGE_ID")
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Attachment profileImage;
+
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> following = new ArrayList<>();
+
+    @OneToMany(mappedBy = "followee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> followers = new ArrayList<>();
 
     private User(String socialId, SocialType socialType, String email, String nickname) {
         this.socialId = socialId;
