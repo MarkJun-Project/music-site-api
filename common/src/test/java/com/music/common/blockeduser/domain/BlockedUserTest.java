@@ -32,7 +32,6 @@ class BlockedUserTest {
         Assertions.assertThat(blockedUser).isNotNull();
         Assertions.assertThat(blockedUser.getBlocker()).isEqualTo(blocker);
         Assertions.assertThat(blockedUser.getBlocked()).isEqualTo(blocked);
-        Assertions.assertThat(blockedUser.getBlockedUserStatus()).isEqualTo(BlockedUserStatus.CREATED);
     }
 
     @Test

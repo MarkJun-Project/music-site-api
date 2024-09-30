@@ -24,8 +24,6 @@ public class BlockedUser extends BaseEntity {
     @ManyToOne
     private User blocked; // 차단된 사용자
 
-    private BlockedUserStatus blockedUserStatus = BlockedUserStatus.CREATED;
-
     private BlockedUser(User blocker, User blocked) {
         blocker.addBlocker(this);
         blocked.addBlocked(this);
