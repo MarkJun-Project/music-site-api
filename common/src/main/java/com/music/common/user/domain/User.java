@@ -1,6 +1,7 @@
 package com.music.common.user.domain;
 
 import com.music.common.attachment.domain.Attachment;
+import com.music.common.blockeduser.domain.BlockedUser;
 import com.music.common.code.SocialType;
 import com.music.common.follow.domain.Follow;
 import com.music.common.support.BaseEntity;
@@ -53,6 +54,12 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "followee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Follow> followers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "blocker", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BlockedUser> blockers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "blocked", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BlockedUser> blockeds = new ArrayList<>();
+
     private User(String socialId, SocialType socialType, String email, String nickname) {
         this.socialId = socialId;
         this.socialType = socialType;
@@ -75,5 +82,13 @@ public class User extends BaseEntity {
 
     public void addFollowers(Follow followee) {
         this.followers.add(followee);
+    }
+
+    public void addBlocker(BlockedUser blocker) {
+        this.blockers.add(blocker);
+    }
+
+    public void addBlocked(BlockedUser blocked) {
+        this.blockeds.add(blocked);
     }
 }
