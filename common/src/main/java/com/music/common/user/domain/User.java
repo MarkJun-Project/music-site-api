@@ -3,6 +3,7 @@ package com.music.common.user.domain;
 import com.music.common.attachment.domain.Attachment;
 import com.music.common.code.SocialType;
 import com.music.common.follow.domain.Follow;
+import com.music.common.likes.domain.Likes;
 import com.music.common.support.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

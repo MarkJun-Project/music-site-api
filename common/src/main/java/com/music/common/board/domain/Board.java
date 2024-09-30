@@ -2,6 +2,7 @@ package com.music.common.board.domain;
 
 import com.music.common.attachment.domain.Attachment;
 import com.music.common.code.MusicCategory;
+import com.music.common.likes.domain.Likes;
 import com.music.common.support.BaseEntity;
 import com.music.common.user.domain.User;
 import jakarta.persistence.*;
@@ -9,6 +10,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.music.common.support.Preconditions.require;
 import static java.util.Objects.nonNull;
@@ -43,6 +47,9 @@ public class Board extends BaseEntity {
     @Column(name = "MUSIC_CATEGORY", length = 100, nullable = false)
     private MusicCategory musicCategory;
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Likes> likes = new ArrayList<>();
+
     private Board(User user, Attachment file, String title, String description, String songTitle, MusicCategory musicCategory) {
         this.user = user;
         this.file = file;
@@ -61,5 +68,9 @@ public class Board extends BaseEntity {
         require(nonNull(musicCategory));
 
         return new Board(user, file, title, description, songTitle, musicCategory);
+    }
+
+    public void addLikes(Likes likes) {
+        this.likes.add(likes);
     }
 }
