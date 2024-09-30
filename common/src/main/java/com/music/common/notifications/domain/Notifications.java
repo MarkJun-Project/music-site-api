@@ -1,0 +1,35 @@
+package com.music.common.notifications.domain;
+
+import com.music.common.support.BaseEntity;
+import com.music.common.user.domain.User;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "DTYPE")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public abstract class Notifications extends BaseEntity {
+    @JoinColumn(name = "RECIPIENT_ID", nullable = false)
+    @ManyToOne
+    private User recipient;
+
+    @Column(name = "NOTIFICATIONS_TYPE", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private NotificationsType notificationsType;
+
+    @Column(name = "MESSAGE", nullable = false)
+    private String message;
+
+    @Column(name = "IS_READ", nullable = false)
+    private boolean isRead = false;
+
+    protected Notifications(User recipient, NotificationsType notificationsType, String message) {
+        this.recipient = recipient;
+        this.notificationsType = notificationsType;
+        this.message = message;
+    }
+}
