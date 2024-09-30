@@ -26,7 +26,6 @@ public class Likes extends BaseEntity {
     private Board board;
 
     private Likes(User user, Board board) {
-        user.addLikes(this);
         board.addLikes(this);
 
         this.user = user;

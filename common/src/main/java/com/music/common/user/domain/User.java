@@ -54,9 +54,6 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "followee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Follow> followers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Likes> likes = new ArrayList<>();
-
     private User(String socialId, SocialType socialType, String email, String nickname) {
         this.socialId = socialId;
         this.socialType = socialType;
@@ -79,9 +76,5 @@ public class User extends BaseEntity {
 
     public void addFollowers(Follow followee) {
         this.followers.add(followee);
-    }
-
-    public void addLikes(Likes likes) {
-        this.likes.add(likes);
     }
 }
