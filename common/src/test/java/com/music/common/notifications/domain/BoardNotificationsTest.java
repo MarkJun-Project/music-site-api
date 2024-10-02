@@ -26,67 +26,59 @@ class BoardNotificationsTest {
     @Test
     void 게시글_알림_생성_성공() {
         // when
-        BoardNotifications boardNotification = BoardNotifications.create(recipient, NotificationsType.NEW_BOARD, "게시글이 등록되었습니다", board);
+        BoardNotifications boardNotification = BoardNotifications.create(recipient, "게시글이 등록되었습니다", board);
 
         // then
         assertThat(boardNotification).isNotNull();
         assertThat(boardNotification.getRecipient()).isEqualTo(recipient);
         assertThat(boardNotification.getBoard()).isEqualTo(board);
-        assertThat(boardNotification.getNotificationsType()).isEqualTo(NotificationsType.NEW_BOARD);
         assertThat(boardNotification.getMessage()).isEqualTo("게시글이 등록되었습니다");
     }
 
     @Test
     void 게시글_알림_생성_실패_유저_null() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> BoardNotifications.create(null, NotificationsType.NEW_BOARD, "게시글이 등록되었습니다", board));
+                .isThrownBy(() -> BoardNotifications.create(null, "게시글이 등록되었습니다", board));
     }
 
     @Test
     void 게시글_알림_생성_실패_게시글_null() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> BoardNotifications.create(recipient, NotificationsType.NEW_BOARD, "게시글이 등록되었습니다", null));
+                .isThrownBy(() -> BoardNotifications.create(recipient, "게시글이 등록되었습니다", null));
     }
 
     @ParameterizedTest
     @NullSource
     void 게시글_알림_생성_실패_유저_null_혹은_빈값(User invalidUser) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> BoardNotifications.create(invalidUser, NotificationsType.NEW_BOARD, "게시글이 등록되었습니다", board));
+                .isThrownBy(() -> BoardNotifications.create(invalidUser, "게시글이 등록되었습니다", board));
     }
 
     @ParameterizedTest
     @NullSource
     void 게시글_알림_생성_실패_게시글_null_혹은_빈값(Board invalidBoard) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> BoardNotifications.create(recipient, NotificationsType.NEW_BOARD, "게시글이 등록되었습니다", invalidBoard));
-    }
-
-    @Test
-    void 게시글_알림_생성_실패_알림_타입_null() {
-        // when & then
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> BoardNotifications.create(recipient, null, "게시글이 등록되었습니다", board));
+                .isThrownBy(() -> BoardNotifications.create(recipient, "게시글이 등록되었습니다", invalidBoard));
     }
 
     @Test
     void 게시글_알림_생성_실패_메시지_null() {
         // when & then
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> BoardNotifications.create(recipient, NotificationsType.NEW_BOARD, null, board));
+                .isThrownBy(() -> BoardNotifications.create(recipient, null, board));
     }
 
     @Test
     void 게시글_알림_생성_실패_메시지_빈값() {
         // when & then
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> BoardNotifications.create(recipient, NotificationsType.NEW_BOARD, "", board));
+                .isThrownBy(() -> BoardNotifications.create(recipient, "", board));
     }
 
     @Test
     void 게시글_알림_생성_실패_메시지_공백() {
         // when & then
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> BoardNotifications.create(recipient, NotificationsType.NEW_BOARD, "   ", board));
+                .isThrownBy(() -> BoardNotifications.create(recipient, "   ", board));
     }
 }

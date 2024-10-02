@@ -26,63 +26,56 @@ class FollowNotificationsTest {
     @Test
     void 팔로우_알림_생성_성공() {
         // when
-        FollowNotifications followNotification = FollowNotifications.create(recipient, NotificationsType.NEW_FOLLOW, "새로운 팔로우가 등록되었습니다", follow);
+        FollowNotifications followNotification = FollowNotifications.create(recipient, "새로운 팔로우가 등록되었습니다", follow);
 
         // then
         assertThat(followNotification).isNotNull();
         assertThat(followNotification.getRecipient()).isEqualTo(recipient);
         assertThat(followNotification.getFollow()).isEqualTo(follow);
-        assertThat(followNotification.getNotificationsType()).isEqualTo(NotificationsType.NEW_FOLLOW);
         assertThat(followNotification.getMessage()).isEqualTo("새로운 팔로우가 등록되었습니다");
     }
 
     @Test
     void 팔로우_알림_생성_실패_유저_null() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> FollowNotifications.create(null, NotificationsType.NEW_FOLLOW, "새로운 팔로우가 등록되었습니다", follow));
+                .isThrownBy(() -> FollowNotifications.create(null, "새로운 팔로우가 등록되었습니다", follow));
     }
 
     @Test
     void 팔로우_알림_생성_실패_팔로우_null() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> FollowNotifications.create(recipient, NotificationsType.NEW_FOLLOW, "새로운 팔로우가 등록되었습니다", null));
+                .isThrownBy(() -> FollowNotifications.create(recipient, "새로운 팔로우가 등록되었습니다", null));
     }
 
     @ParameterizedTest
     @NullSource
     void 팔로우_알림_생성_실패_유저_null_혹은_빈값(User invalidUser) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> FollowNotifications.create(invalidUser, NotificationsType.NEW_FOLLOW, "새로운 팔로우가 등록되었습니다", follow));
+                .isThrownBy(() -> FollowNotifications.create(invalidUser, "새로운 팔로우가 등록되었습니다", follow));
     }
 
     @ParameterizedTest
     @NullSource
     void 팔로우_알림_생성_실패_팔로우_null_혹은_빈값(Follow invalidFollow) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> FollowNotifications.create(recipient, NotificationsType.NEW_FOLLOW, "새로운 팔로우가 등록되었습니다", invalidFollow));
-    }
-
-    @Test
-    void 팔로우_알림_생성_실패_알림_타입_null() {
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> FollowNotifications.create(recipient, null, "새로운 팔로우가 등록되었습니다", follow));
+                .isThrownBy(() -> FollowNotifications.create(recipient, "새로운 팔로우가 등록되었습니다", invalidFollow));
     }
 
     @Test
     void 팔로우_알림_생성_실패_메시지_null() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> FollowNotifications.create(recipient, NotificationsType.NEW_FOLLOW, null, follow));
+                .isThrownBy(() -> FollowNotifications.create(recipient, null, follow));
     }
 
     @Test
     void 팔로우_알림_생성_실패_메시지_빈값() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> FollowNotifications.create(recipient, NotificationsType.NEW_FOLLOW, "", follow));
+                .isThrownBy(() -> FollowNotifications.create(recipient, "", follow));
     }
 
     @Test
     void 팔로우_알림_생성_실패_메시지_공백() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> FollowNotifications.create(recipient, NotificationsType.NEW_FOLLOW, "   ", follow));
+                .isThrownBy(() -> FollowNotifications.create(recipient, "   ", follow));
     }
 }

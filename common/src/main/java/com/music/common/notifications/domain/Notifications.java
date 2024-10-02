@@ -10,16 +10,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "DTYPE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Notifications extends BaseEntity {
     @JoinColumn(name = "RECIPIENT_ID", nullable = false)
     @ManyToOne
     private User recipient;
-
-    @Column(name = "NOTIFICATIONS_TYPE", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private NotificationsType notificationsType;
 
     @Column(name = "MESSAGE", nullable = false)
     private String message;
@@ -27,9 +22,8 @@ public abstract class Notifications extends BaseEntity {
     @Column(name = "IS_READ", nullable = false)
     private boolean isRead = false;
 
-    protected Notifications(User recipient, NotificationsType notificationsType, String message) {
+    protected Notifications(User recipient, String message) {
         this.recipient = recipient;
-        this.notificationsType = notificationsType;
         this.message = message;
     }
 }

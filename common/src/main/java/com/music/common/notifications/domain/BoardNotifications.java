@@ -14,23 +14,21 @@ import static java.util.Objects.nonNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@DiscriminatorValue("B")
 public class BoardNotifications extends Notifications {
     @JoinColumn(name = "BOARD_ID", nullable = false)
     @ManyToOne
     private Board board;
 
-    private BoardNotifications(User recipient, NotificationsType notificationsType, String message, Board board) {
-        super(recipient, notificationsType, message);
+    private BoardNotifications(User recipient, String message, Board board) {
+        super(recipient, message);
         this.board = board;
     }
 
-    public static BoardNotifications create(User recipient, NotificationsType notificationsType, String message, Board board) {
+    public static BoardNotifications create(User recipient, String message, Board board) {
         require(nonNull(recipient));
-        require(nonNull(notificationsType));
         require(Strings.isNotBlank(message));
         require(nonNull(board));
 
-        return new BoardNotifications(recipient, notificationsType, message, board);
+        return new BoardNotifications(recipient, message, board);
     }
 }
