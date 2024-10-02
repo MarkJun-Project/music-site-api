@@ -24,7 +24,7 @@ public class Admin extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
-    private AdminStatus adminStatus = AdminStatus.CREATED;
+    private AdminStatus status = AdminStatus.CREATED;
 
     private Admin(String serviceId, String password) {
         this.serviceId = serviceId;

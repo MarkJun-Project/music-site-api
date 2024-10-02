@@ -22,7 +22,7 @@ class AdminTest {
         Assertions.assertThat(admin).isNotNull();
         Assertions.assertThat(admin.getServiceId()).isEqualTo(serviceId);
         Assertions.assertThat(admin.getPassword()).isEqualTo(password);
-        Assertions.assertThat(admin.getAdminStatus()).isEqualTo(AdminStatus.CREATED);
+        Assertions.assertThat(admin.getStatus()).isEqualTo(AdminStatus.CREATED);
     }
 
     @ParameterizedTest
