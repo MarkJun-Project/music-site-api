@@ -36,7 +36,7 @@ public class Comment extends BaseEntity {
 
     @Column(name = "COMMENT_STATUS", nullable = false)
     @Enumerated(EnumType.STRING)
-    private CommentStatus commentStatus = CommentStatus.CREATED;
+    private CommentStatus status = CommentStatus.CREATED;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> children = new ArrayList<>();
