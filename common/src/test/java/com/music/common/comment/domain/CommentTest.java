@@ -36,7 +36,7 @@ class CommentTest {
         assertThat(comment.getUser()).isEqualTo(user);
         assertThat(comment.getBoard()).isEqualTo(board);
         assertThat(comment.getComment()).isEqualTo(content);
-        assertThat(comment.getCommentStatus()).isEqualTo(CommentStatus.CREATED);
+        assertThat(comment.getStatus()).isEqualTo(CommentStatus.CREATED);
     }
 
     @Test
