@@ -1,0 +1,61 @@
+package com.music.common.reporteduser.domain;
+
+import com.music.common.admin.domian.Admin;
+import com.music.common.support.BaseEntity;
+import com.music.common.user.domain.User;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
+
+import static com.music.common.support.Preconditions.require;
+import static java.util.Objects.nonNull;
+
+
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+public class ReportedUser extends BaseEntity {
+
+    @JoinColumn(name = "REPORTER_ID", nullable = false)
+    @ManyToOne
+    private User reporter;
+
+    @JoinColumn(name = "REPORTED_ID", nullable = false)
+    @ManyToOne
+    private User reported;
+
+    @JoinColumn(name = "ADMIN_ID", nullable = false)
+    @ManyToOne
+    private Admin admin;
+
+    @Column(name = "CATEGORY", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ReportCategory category;
+
+    @Column(name = "REASON", length = 1000, nullable = false)
+    private String reason;
+
+    @Column(name = "STATUS", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ReportStatus status = ReportStatus.PENDING;
+
+    private ReportedUser(User reporter, User reported, Admin admin, ReportCategory category, String reason) {
+        this.reporter = reporter;
+        this.reported = reported;
+        this.admin = admin;
+        this.category = category;
+        this.reason = reason;
+    }
+
+    public static ReportedUser create(User reporter, User reported, Admin admin, ReportCategory category, String reason) {
+        require(nonNull(reporter));
+        require(nonNull(reported));
+        require(nonNull(admin));
+        require(nonNull(category));
+        require(Strings.isNotBlank(reason));
+
+        return new ReportedUser(reporter, reported, admin, category, reason);
+    }
+}
