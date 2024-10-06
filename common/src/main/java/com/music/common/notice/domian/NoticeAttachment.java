@@ -22,7 +22,7 @@ public class NoticeAttachment extends BaseEntity {
     @ManyToOne
     private Attachment attachment;
 
-    @Column(name = "NOTICE_ID", nullable = false)
+    @JoinColumn(name = "NOTICE_ID", nullable = false)
     @ManyToOne
     private Notice notice;
 

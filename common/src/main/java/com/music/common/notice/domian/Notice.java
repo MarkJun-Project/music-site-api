@@ -18,8 +18,8 @@ import static java.util.Objects.nonNull;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Notice extends BaseEntity {
-    @Column(name = "ADMIN_ID", nullable = false)
     @ManyToOne
+    @JoinColumn(name = "ADMIN_ID", nullable = false)
     private Admin admin;
 
     @Column(name = "TITLE", nullable = false)
