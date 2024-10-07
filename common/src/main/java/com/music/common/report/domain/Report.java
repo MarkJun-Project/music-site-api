@@ -56,10 +56,4 @@ public class Report extends BaseEntity {
 
         return new Report(reporter, reportedUser, category, reason);
     }
-
-    public void startAdminReview(Admin admin) {
-        require(nonNull(admin));
-        this.admin = admin;
-        this.status = ReportStatus.UNDER_REVIEW;
-    }
 }
