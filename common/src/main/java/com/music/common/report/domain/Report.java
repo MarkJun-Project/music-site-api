@@ -56,9 +56,17 @@ public class Report extends BaseEntity {
         return new Report(reporter, reportedUser, category, reason);
     }
 
-    public void startAdminReview(Admin admin) {
-        require(nonNull(admin));
+    public void startReview(Admin admin) {
+        validateBeforeReview(admin);
         this.admin = admin;
         this.status = ReportStatus.UNDER_REVIEW;
+    }
+
+    private void validateBeforeReview(Admin admin) {
+        if (status != ReportStatus.PENDING) {
+            throw new IllegalStateException("이미 처리된 신고이거나 진행중인 신고입니다.");
+        }
+
+        require(nonNull(admin));
     }
 }
