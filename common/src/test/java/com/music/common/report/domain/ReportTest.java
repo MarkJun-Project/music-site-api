@@ -32,17 +32,15 @@ class ReportTest {
         String reason = "This is a report.";
 
         // when
-        Report reportedUser = Report.create(reporter, this.reportedUser, category, reason);
-        reportedUser.updateAdmin(admin);
+        Report report = Report.create(reporter, reportedUser, category, reason);
 
         // then
-        Assertions.assertThat(reportedUser).isNotNull();
-        Assertions.assertThat(reportedUser.getReporter()).isEqualTo(reporter);
-        Assertions.assertThat(reportedUser.getReportedUser()).isEqualTo(this.reportedUser);
-        Assertions.assertThat(reportedUser.getAdmin()).isEqualTo(admin);
-        Assertions.assertThat(reportedUser.getCategory()).isEqualTo(category);
-        Assertions.assertThat(reportedUser.getReason()).isEqualTo(reason);
-        Assertions.assertThat(reportedUser.getStatus()).isEqualTo(ReportStatus.PENDING);
+        Assertions.assertThat(report).isNotNull();
+        Assertions.assertThat(report.getReporter()).isEqualTo(reporter);
+        Assertions.assertThat(report.getReportedUser()).isEqualTo(reportedUser);
+        Assertions.assertThat(report.getCategory()).isEqualTo(category);
+        Assertions.assertThat(report.getReason()).isEqualTo(reason);
+        Assertions.assertThat(report.getStatus()).isEqualTo(ReportStatus.PENDING);
     }
 
     @Test
@@ -57,14 +55,6 @@ class ReportTest {
                 .isThrownBy(() -> Report.create(reporter, null, ReportCategory.DISTURBING_CONTENT, "Reason"));
     }
 
-    @Test
-    void 유저신고_관리자_업데이트_null() {
-        Report report = Report.create(reporter, reportedUser, ReportCategory.DISTURBING_CONTENT, "Reason");
-
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> report.updateAdmin(null));
-    }
-
     @ParameterizedTest
     @NullAndEmptySource
     void 유저신고_생성_실패_사유_null_혹은_빈값(String invalidReason) {
@@ -76,5 +66,34 @@ class ReportTest {
     void 유저신고_생성_실패_카테고리_null() {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> Report.create(reporter, reportedUser, null, "Reason"));
+    }
+
+    @Test
+    void 유저신고_관리자_검토_시작_성공() {
+        // given
+        ReportCategory category = ReportCategory.DISTURBING_CONTENT;
+        String reason = "This is a report.";
+
+        Report report = Report.create(reporter, reportedUser, category, reason);
+
+        // when
+        report.startAdminReview(admin);
+
+        // then
+        Assertions.assertThat(report.getAdmin()).isEqualTo(admin);
+        Assertions.assertThat(report.getStatus()).isEqualTo(ReportStatus.UNDER_REVIEW);
+    }
+
+    @Test
+    void 유저신고_관리자_검토_시작_실패_어드민_null() {
+        // given
+        ReportCategory category = ReportCategory.DISTURBING_CONTENT;
+        String reason = "This is a report.";
+
+        Report report = Report.create(reporter, reportedUser, category, reason);
+
+        // when & then
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> report.startAdminReview(null));
     }
 }
