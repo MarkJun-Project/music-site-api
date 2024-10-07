@@ -32,6 +32,7 @@ class FollowNotificationsTest {
         assertThat(followNotification).isNotNull();
         assertThat(followNotification.getRecipient()).isEqualTo(recipient);
         assertThat(followNotification.getFollow()).isEqualTo(follow);
+        assertThat(followNotification.getStatus()).isEqualTo(NotificationsStatus.CREATED);
         assertThat(followNotification.getMessage()).isEqualTo("새로운 팔로우가 등록되었습니다");
     }
 

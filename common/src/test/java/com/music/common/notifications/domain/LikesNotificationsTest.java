@@ -31,6 +31,7 @@ class LikesNotificationsTest {
         assertThat(likesNotification).isNotNull();
         assertThat(likesNotification.getRecipient()).isEqualTo(recipient);
         assertThat(likesNotification.getMessage()).isEqualTo("좋아요가 등록되었습니다");
+        assertThat(likesNotification.getStatus()).isEqualTo(NotificationsStatus.CREATED);
         assertThat(likesNotification.getLikes()).isEqualTo(likes);
     }
 

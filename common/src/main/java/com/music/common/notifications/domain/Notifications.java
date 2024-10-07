@@ -19,8 +19,8 @@ public abstract class Notifications extends BaseEntity {
     @Column(name = "MESSAGE", nullable = false)
     private String message;
 
-    @Column(name = "IS_READ", nullable = false)
-    private boolean isRead = false;
+    @Column(name = "STATUS", nullable = false)
+    private NotificationsStatus status = NotificationsStatus.CREATED;
 
     protected Notifications(User recipient, String message) {
         this.recipient = recipient;

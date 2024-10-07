@@ -32,6 +32,7 @@ class BoardNotificationsTest {
         assertThat(boardNotification).isNotNull();
         assertThat(boardNotification.getRecipient()).isEqualTo(recipient);
         assertThat(boardNotification.getBoard()).isEqualTo(board);
+        assertThat(boardNotification.getStatus()).isEqualTo(NotificationsStatus.CREATED);
         assertThat(boardNotification.getMessage()).isEqualTo("게시글이 등록되었습니다");
     }
 
