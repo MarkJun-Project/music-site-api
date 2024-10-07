@@ -1,4 +1,4 @@
-package com.music.common.reporteduser.domain;
+package com.music.common.report.domain;
 
 
 import com.music.common.admin.domian.Admin;
@@ -13,15 +13,15 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
-class ReportedUserTest {
-    private User reporter;
-    private User reported;
+class ReportTest {
+    private User reporterUser;
+    private User reportedUser;
     private Admin admin;
 
     @BeforeEach
     void setUp() {
-        this.reporter = UserFixture.create();
-        this.reported = UserFixture.create();
+        this.reporterUser = UserFixture.create();
+        this.reportedUser = UserFixture.create();
         this.admin = AdminFixture.create();
     }
 
@@ -32,12 +32,13 @@ class ReportedUserTest {
         String reason = "This is a report.";
 
         // when
-        ReportedUser reportedUser = ReportedUser.create(reporter, reported, admin, category, reason);
+        Report reportedUser = Report.create(reporterUser, this.reportedUser, category, reason);
+        reportedUser.updateAdmin(admin);
 
         // then
         Assertions.assertThat(reportedUser).isNotNull();
-        Assertions.assertThat(reportedUser.getReporter()).isEqualTo(reporter);
-        Assertions.assertThat(reportedUser.getReported()).isEqualTo(reported);
+        Assertions.assertThat(reportedUser.getReporterUser()).isEqualTo(reporterUser);
+        Assertions.assertThat(reportedUser.getReportedUser()).isEqualTo(this.reportedUser);
         Assertions.assertThat(reportedUser.getAdmin()).isEqualTo(admin);
         Assertions.assertThat(reportedUser.getCategory()).isEqualTo(category);
         Assertions.assertThat(reportedUser.getReason()).isEqualTo(reason);
@@ -47,31 +48,33 @@ class ReportedUserTest {
     @Test
     void 유저신고_생성_실패_신고자_null() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> ReportedUser.create(null, reported, admin, ReportCategory.DISTURBING_CONTENT, "Reason"));
+                .isThrownBy(() -> Report.create(null, reportedUser, ReportCategory.DISTURBING_CONTENT, "Reason"));
     }
 
     @Test
     void 유저신고_생성_실패_신고대상_null() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> ReportedUser.create(reporter, null, admin, ReportCategory.DISTURBING_CONTENT, "Reason"));
+                .isThrownBy(() -> Report.create(reporterUser, null, ReportCategory.DISTURBING_CONTENT, "Reason"));
     }
 
     @Test
-    void 유저신고_생성_실패_관리자_null() {
+    void 유저신고_관리자_업데이트_null() {
+        Report report = Report.create(reporterUser, reportedUser, ReportCategory.DISTURBING_CONTENT, "Reason");
+
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> ReportedUser.create(reporter, reported, null, ReportCategory.DISTURBING_CONTENT, "Reason"));
+                .isThrownBy(() -> report.updateAdmin(null));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void 유저신고_생성_실패_사유_null_혹은_빈값(String invalidReason) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> ReportedUser.create(reporter, reported, admin, ReportCategory.DISTURBING_CONTENT, invalidReason));
+                .isThrownBy(() -> Report.create(reporterUser, reportedUser, ReportCategory.DISTURBING_CONTENT, invalidReason));
     }
 
     @Test
     void 유저신고_생성_실패_카테고리_null() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> ReportedUser.create(reporter, reported, admin, null, "Reason"));
+                .isThrownBy(() -> Report.create(reporterUser, reportedUser, null, "Reason"));
     }
 }

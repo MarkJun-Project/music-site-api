@@ -1,4 +1,4 @@
-package com.music.common.reporteduser.domain;
+package com.music.common.report.domain;
 
 import lombok.Getter;
 

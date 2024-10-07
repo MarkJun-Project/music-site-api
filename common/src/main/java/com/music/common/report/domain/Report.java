@@ -1,4 +1,4 @@
-package com.music.common.reporteduser.domain;
+package com.music.common.report.domain;
 
 import com.music.common.admin.domian.Admin;
 import com.music.common.support.BaseEntity;
@@ -16,15 +16,15 @@ import static java.util.Objects.nonNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class ReportedUser extends BaseEntity {
+public class Report extends BaseEntity {
 
     @JoinColumn(name = "REPORTER_ID", nullable = false)
     @ManyToOne
-    private User reporter;
+    private User reporterUser;
 
     @JoinColumn(name = "REPORTED_ID", nullable = false)
     @ManyToOne
-    private User reported;
+    private User reportedUser;
 
     @JoinColumn(name = "ADMIN_ID", nullable = false)
     @ManyToOne
@@ -41,21 +41,24 @@ public class ReportedUser extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ReportStatus status = ReportStatus.PENDING;
 
-    private ReportedUser(User reporter, User reported, Admin admin, ReportCategory category, String reason) {
-        this.reporter = reporter;
-        this.reported = reported;
-        this.admin = admin;
+    private Report(User reporter, User reported, ReportCategory category, String reason) {
+        this.reporterUser = reporter;
+        this.reportedUser = reported;
         this.category = category;
         this.reason = reason;
     }
 
-    public static ReportedUser create(User reporter, User reported, Admin admin, ReportCategory category, String reason) {
-        require(nonNull(reporter));
-        require(nonNull(reported));
-        require(nonNull(admin));
+    public static Report create(User reporterUser, User reportedUser, ReportCategory category, String reason) {
+        require(nonNull(reporterUser));
+        require(nonNull(reportedUser));
         require(nonNull(category));
         require(Strings.isNotBlank(reason));
 
-        return new ReportedUser(reporter, reported, admin, category, reason);
+        return new Report(reporterUser, reportedUser, category, reason);
+    }
+
+    public void updateAdmin(Admin admin) {
+        require(nonNull(admin));
+        this.admin = admin;
     }
 }
