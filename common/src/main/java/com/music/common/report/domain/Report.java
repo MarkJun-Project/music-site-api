@@ -17,7 +17,6 @@ import static java.util.Objects.nonNull;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Report extends BaseEntity {
-
     @JoinColumn(name = "REPORTER_ID", nullable = false)
     @ManyToOne
     private User reporter;
@@ -55,5 +54,11 @@ public class Report extends BaseEntity {
         require(Strings.isNotBlank(reason));
 
         return new Report(reporter, reportedUser, category, reason);
+    }
+
+    public void startAdminReview(Admin admin) {
+        require(nonNull(admin));
+        this.admin = admin;
+        this.status = ReportStatus.UNDER_REVIEW;
     }
 }
