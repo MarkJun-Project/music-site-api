@@ -26,7 +26,7 @@ public class Report extends BaseEntity {
     @ManyToOne
     private User reportedUser;
 
-    @JoinColumn(name = "ADMIN_ID", nullable = false)
+    @JoinColumn(name = "ADMIN_ID")
     @ManyToOne
     private Admin admin;
 
