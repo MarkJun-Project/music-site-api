@@ -20,9 +20,9 @@ public class Report extends BaseEntity {
 
     @JoinColumn(name = "REPORTER_ID", nullable = false)
     @ManyToOne
-    private User reporterUser;
+    private User reporter;
 
-    @JoinColumn(name = "REPORTED_ID", nullable = false)
+    @JoinColumn(name = "REPORTED_USER_ID", nullable = false)
     @ManyToOne
     private User reportedUser;
 
@@ -41,20 +41,20 @@ public class Report extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ReportStatus status = ReportStatus.PENDING;
 
-    private Report(User reporter, User reported, ReportCategory category, String reason) {
-        this.reporterUser = reporter;
-        this.reportedUser = reported;
+    private Report(User reporter, User reportedUser, ReportCategory category, String reason) {
+        this.reporter = reporter;
+        this.reportedUser = reportedUser;
         this.category = category;
         this.reason = reason;
     }
 
-    public static Report create(User reporterUser, User reportedUser, ReportCategory category, String reason) {
-        require(nonNull(reporterUser));
+    public static Report create(User reporter, User reportedUser, ReportCategory category, String reason) {
+        require(nonNull(reporter));
         require(nonNull(reportedUser));
         require(nonNull(category));
         require(Strings.isNotBlank(reason));
 
-        return new Report(reporterUser, reportedUser, category, reason);
+        return new Report(reporter, reportedUser, category, reason);
     }
 
     public void updateAdmin(Admin admin) {

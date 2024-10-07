@@ -14,13 +14,13 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 class ReportTest {
-    private User reporterUser;
+    private User reporter;
     private User reportedUser;
     private Admin admin;
 
     @BeforeEach
     void setUp() {
-        this.reporterUser = UserFixture.create();
+        this.reporter = UserFixture.create();
         this.reportedUser = UserFixture.create();
         this.admin = AdminFixture.create();
     }
@@ -32,12 +32,12 @@ class ReportTest {
         String reason = "This is a report.";
 
         // when
-        Report reportedUser = Report.create(reporterUser, this.reportedUser, category, reason);
+        Report reportedUser = Report.create(reporter, this.reportedUser, category, reason);
         reportedUser.updateAdmin(admin);
 
         // then
         Assertions.assertThat(reportedUser).isNotNull();
-        Assertions.assertThat(reportedUser.getReporterUser()).isEqualTo(reporterUser);
+        Assertions.assertThat(reportedUser.getReporter()).isEqualTo(reporter);
         Assertions.assertThat(reportedUser.getReportedUser()).isEqualTo(this.reportedUser);
         Assertions.assertThat(reportedUser.getAdmin()).isEqualTo(admin);
         Assertions.assertThat(reportedUser.getCategory()).isEqualTo(category);
@@ -54,12 +54,12 @@ class ReportTest {
     @Test
     void 유저신고_생성_실패_신고대상_null() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> Report.create(reporterUser, null, ReportCategory.DISTURBING_CONTENT, "Reason"));
+                .isThrownBy(() -> Report.create(reporter, null, ReportCategory.DISTURBING_CONTENT, "Reason"));
     }
 
     @Test
     void 유저신고_관리자_업데이트_null() {
-        Report report = Report.create(reporterUser, reportedUser, ReportCategory.DISTURBING_CONTENT, "Reason");
+        Report report = Report.create(reporter, reportedUser, ReportCategory.DISTURBING_CONTENT, "Reason");
 
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> report.updateAdmin(null));
@@ -69,12 +69,12 @@ class ReportTest {
     @NullAndEmptySource
     void 유저신고_생성_실패_사유_null_혹은_빈값(String invalidReason) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> Report.create(reporterUser, reportedUser, ReportCategory.DISTURBING_CONTENT, invalidReason));
+                .isThrownBy(() -> Report.create(reporter, reportedUser, ReportCategory.DISTURBING_CONTENT, invalidReason));
     }
 
     @Test
     void 유저신고_생성_실패_카테고리_null() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> Report.create(reporterUser, reportedUser, null, "Reason"));
+                .isThrownBy(() -> Report.create(reporter, reportedUser, null, "Reason"));
     }
 }
