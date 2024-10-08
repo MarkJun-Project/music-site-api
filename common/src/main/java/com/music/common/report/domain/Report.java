@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 
-import static com.music.common.support.Preconditions.require;
+import static com.music.common.support.Preconditions.*;
 import static java.util.Objects.nonNull;
 
 
@@ -57,16 +57,10 @@ public class Report extends BaseEntity {
     }
 
     public void startReview(Admin admin) {
-        validateBeforeReview(admin);
+        check(this.status == ReportStatus.PENDING);
+        require(nonNull(admin));
+
         this.admin = admin;
         this.status = ReportStatus.UNDER_REVIEW;
-    }
-
-    private void validateBeforeReview(Admin admin) {
-        if (status != ReportStatus.PENDING) {
-            throw new IllegalStateException("이미 처리된 신고이거나 진행중인 신고입니다.");
-        }
-
-        require(nonNull(admin));
     }
 }
