@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 class CommentTest {
     private User user;
     private Board board;
+    private Comment comment;
 
     @BeforeEach
     void setUp() {
@@ -104,4 +105,27 @@ class CommentTest {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> Comment.createReply(user, board, invalidContent, parentComment));
     }
+
+    @Test
+    void 댓글_수정_성공() {
+        // Given
+        String content = "This is a test comment.";
+        Comment comment = Comment.createComment(user, board, content);
+
+        // When
+        String updateComment = "updateComment";
+        comment.update(updateComment);
+
+        assertThat(comment.getComment()).isEqualTo("updateComment");
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    void 댓글_수정_실패_내용_null_혹은_빈값(String nullContent) {
+        String content = "This is a test comment.";
+        Comment comment = Comment.createComment(user, board, content);
+
+        assertThatIllegalArgumentException().isThrownBy(() -> comment.update(nullContent));
+    }
+
 }
