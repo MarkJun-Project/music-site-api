@@ -41,6 +41,9 @@ public class Comment extends BaseEntity {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> children = new ArrayList<>();
 
+    public boolean isUser(User user) {
+        return this.user == user;
+    }
 
     // 댓글 생성자
     private Comment(User user, Board board, String comment) {
