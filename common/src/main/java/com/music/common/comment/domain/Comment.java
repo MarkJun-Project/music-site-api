@@ -12,8 +12,10 @@ import org.apache.logging.log4j.util.Strings;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.music.common.support.Preconditions.actorValidate;
 import static com.music.common.support.Preconditions.require;
 import static java.util.Objects.nonNull;
+import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -81,5 +83,11 @@ public class Comment extends BaseEntity {
 
     private void addChild(Comment child) {
         children.add(child);
+    }
+
+    public void update(String comment) {
+        require(Strings.isNotBlank(comment));
+
+        this.comment = comment;
     }
 }
