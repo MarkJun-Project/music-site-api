@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 
-import static com.music.common.support.Preconditions.require;
+import static com.music.common.support.Preconditions.*;
 import static java.util.Objects.nonNull;
 
 
@@ -17,7 +17,6 @@ import static java.util.Objects.nonNull;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Report extends BaseEntity {
-
     @JoinColumn(name = "REPORTER_ID", nullable = false)
     @ManyToOne
     private User reporter;
@@ -55,5 +54,13 @@ public class Report extends BaseEntity {
         require(Strings.isNotBlank(reason));
 
         return new Report(reporter, reportedUser, category, reason);
+    }
+
+    public void startReview(Admin admin) {
+        check(this.status == ReportStatus.PENDING);
+        require(nonNull(admin));
+
+        this.admin = admin;
+        this.status = ReportStatus.UNDER_REVIEW;
     }
 }
