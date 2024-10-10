@@ -18,6 +18,8 @@ import java.util.List;
 
 import static com.music.common.support.Preconditions.require;
 import static java.util.Objects.nonNull;
+import static org.apache.logging.log4j.util.Strings.*;
+import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
 @Getter
 @Entity
@@ -61,20 +63,18 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "blocked", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BlockedUser> blockeds = new ArrayList<>();
 
-    private User(String socialId, SocialType socialType, String email, String nickname) {
+    private User(String socialId, SocialType socialType, String email) {
         this.socialId = socialId;
         this.socialType = socialType;
         this.email = email;
-        this.nickname = nickname;
     }
 
-    public static User create(String socialId, SocialType socialType, String email, String nickname) {
-        require(Strings.isNotBlank(socialId));
+    public static User create(String socialId, SocialType socialType, String email) {
+        require(isNotBlank(socialId));
         require(nonNull(socialType));
-        require(Strings.isNotBlank(email));
-        require(Strings.isNotBlank(nickname));
+        require(isNotBlank(email));
 
-        return new User(socialId, socialType, email, nickname);
+        return new User(socialId, socialType, email);
     }
 
     public void addFollowing(Follow follower) {
@@ -91,5 +91,11 @@ public class User extends BaseEntity {
 
     public void addBlocked(BlockedUser blocked) {
         this.blockeds.add(blocked);
+    }
+
+    public void updateNickname(String nickname) {
+        require(isNotBlank(nickname));
+
+        this.nickname = nickname;
     }
 }

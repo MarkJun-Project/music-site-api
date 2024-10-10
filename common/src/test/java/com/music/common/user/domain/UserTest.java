@@ -1,6 +1,7 @@
 package com.music.common.user.domain;
 
 import com.music.common.code.SocialType;
+import fixtures.UserFixture;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
@@ -16,42 +17,57 @@ class UserTest {
         String socialId = "socialId";
         SocialType socialType = SocialType.KAKAO;
         String email = "email";
-        String nickname = "nickname";
 
         // when
-        User user = User.create(socialId, socialType, email, nickname);
+        User user = User.create(socialId, socialType, email);
 
         // then
         assertThat(user.getSocialId()).isEqualTo(socialId);
         assertThat(user.getSocialType()).isEqualTo(socialType);
         assertThat(user.getEmail()).isEqualTo(email);
-        assertThat(user.getNickname()).isEqualTo(nickname);
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void 유저_생성_실패_소셜ID_값_null_혹은_빈값(String invalidSocialId) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> User.create(invalidSocialId, SocialType.KAKAO, "email", "nickname"));
+                .isThrownBy(() -> User.create(invalidSocialId, SocialType.KAKAO, "email"));
     }
 
     @Test
     void 유저_생성_실패_소셜타입_null() {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> User.create("socialId", null, "email", "nickname"));
+                .isThrownBy(() -> User.create("socialId", null, "email"));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void 유저_생성_실패_이메일_값_null_혹은_빈값(String invalidEmail) {
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> User.create("socialId", SocialType.KAKAO, invalidEmail, "nickname"));
+                .isThrownBy(() -> User.create("socialId", SocialType.KAKAO, invalidEmail));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
-    void 유저_생성_실패_닉네임_값_null_혹은_빈값(String invalidNickname) {
+    void 닉네임_변경_실패_null_혹은_빈값(String invalidNickname) {
+        // given
+        User user = UserFixture.create();
+
+        // when & then
         assertThatIllegalArgumentException()
-                .isThrownBy(() -> User.create("socialId", SocialType.KAKAO, "email", invalidNickname));
+                .isThrownBy(() -> user.updateNickname(invalidNickname));
+    }
+
+    @Test
+    void 닉네임_변경_성공() {
+        // given
+        String nickname = "nickname";
+        User user = UserFixture.create();
+
+        // when
+        user.updateNickname(nickname);
+
+        // then
+        assertThat(user.getNickname()).isEqualTo(nickname);
     }
 }
