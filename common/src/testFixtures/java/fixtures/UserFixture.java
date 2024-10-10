@@ -9,8 +9,7 @@ public class UserFixture {
         String socialId = "socialId";
         SocialType socialType = SocialType.KAKAO;
         String email = "email";
-        String nickname = "nickname";
 
-        return User.create(socialId, socialType, email, nickname);
+        return User.create(socialId, socialType, email);
     }
 }
