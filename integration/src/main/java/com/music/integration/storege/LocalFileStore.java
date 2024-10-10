@@ -1,6 +1,7 @@
 package com.music.integration.storege;
 
 import com.music.integration.support.RuntimeIOException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,21 +14,25 @@ import static com.music.common.support.Preconditions.require;
 
 @Component
 public class LocalFileStore implements FileStore{
+    @Value("${spring.file_upload.path}")
+    private String filePath;
+
     @Override
-    public List<UploadFile> uploads(List<MultipartFile> multipartFiles, String fileDir) {
+    public List<UploadFile> uploads(List<MultipartFile> multipartFiles, String dirName) {
         return multipartFiles.stream()
                 .filter(file -> !file.isEmpty())
-                .map(file -> upload(file, fileDir))
+                .map(file -> upload(file, dirName))
                 .toList();
     }
 
     @Override
-    public UploadFile upload(MultipartFile multipartFile, String fileDir) {
-        require(!multipartFile.isEmpty());
+    public UploadFile upload(MultipartFile multipartFile, String dirName) {
+        require(multipartFile.isEmpty());
 
         String originalFilename = multipartFile.getOriginalFilename();
         String uploadFilename = crateStoreFileName(originalFilename);
-        String fullPath = getFullPath(fileDir, uploadFilename);
+        String dirPath = getDirPath(dirName, uploadFilename);
+        String fullPath = filePath + File.separator + dirPath;
 
         try {
             multipartFile.transferTo(new File(fullPath));
@@ -35,7 +40,7 @@ public class LocalFileStore implements FileStore{
             throw new RuntimeIOException(e);
         }
 
-        return UploadFile.create(fullPath, uploadFilename, originalFilename);
+        return UploadFile.create(dirPath, uploadFilename, originalFilename);
     }
 
     private String crateStoreFileName(String originalFilename) {
@@ -43,7 +48,7 @@ public class LocalFileStore implements FileStore{
         return uuid + originalFilename;
     }
 
-    private String getFullPath(String fileDir, String fileName) {
+    private String getDirPath(String fileDir, String fileName) {
         return fileDir + File.separator + fileName;
     }
 }
