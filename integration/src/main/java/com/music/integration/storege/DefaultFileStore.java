@@ -13,7 +13,7 @@ import java.util.UUID;
 import static com.music.common.support.Preconditions.require;
 
 @Component
-public class LocalFileStore implements FileStore{
+public class DefaultFileStore implements FileStore{
     @Value("${spring.file_upload.path}")
     private String filePath;
 
