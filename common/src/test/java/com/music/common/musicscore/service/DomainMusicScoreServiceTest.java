@@ -1,6 +1,5 @@
 package com.music.common.musicscore.service;
 
-import com.music.common.attachment.domain.Attachment;
 import com.music.common.board.domain.Board;
 import com.music.common.board.domain.BoardRepository;
 import com.music.common.code.MusicCategory;
@@ -10,7 +9,6 @@ import com.music.common.support.BaseServiceTest;
 import com.music.common.user.domain.User;
 import com.music.common.user.domain.UserRepository;
 import fixtures.AttachmentFixture;
-import fixtures.BoardFixture;
 import fixtures.UserFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
