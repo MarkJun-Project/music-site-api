@@ -40,7 +40,7 @@ public class DomainCommentService implements CommentService {
 
         actorValidate(comment.isUser(user));
 
-        comment.update(comment);
+        comment.update(content);
     }
 
 }

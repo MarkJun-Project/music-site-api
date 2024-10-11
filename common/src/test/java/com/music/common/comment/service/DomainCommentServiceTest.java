@@ -18,7 +18,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.music.common.code.MusicCategory.EDM;
+import static com.music.common.support.ExceptionTest.assertThatActorValidateCustomException;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 
 public class DomainCommentServiceTest extends BaseServiceTest {
@@ -70,5 +72,23 @@ public class DomainCommentServiceTest extends BaseServiceTest {
 
         assertThat(comment.getId()).isNotNull();
         assertThat(comment.getComment()).isEqualTo("comment");
+    }
+
+    @Test
+    void 게시글_댓글_수정_성공() {
+        Comment comment = commentService.create(board.getId(), user.getId(), "comment");
+
+        commentService.update(comment.getId(), user.getId(), "updateComment");
+
+        assertThat(comment.getComment()).isEqualTo("updateComment");
+    }
+
+    @Test
+    void 게시글_댓글_수정_실패__작성자가_아님() {
+        Comment comment = commentService.create(board.getId(), user.getId(), "comment");
+
+        User fakeUser = userRepository.save(UserFixture.create());
+
+        assertThatActorValidateCustomException().isThrownBy(() -> commentService.update(comment.getId(), fakeUser.getId(), "updatedComment"));
     }
 }
