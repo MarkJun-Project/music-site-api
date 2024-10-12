@@ -5,6 +5,7 @@ import com.music.common.attachment.domain.AttachmentRepository;
 import com.music.common.board.domain.Board;
 import com.music.common.board.domain.BoardRepository;
 import com.music.common.board.service.BoardService;
+import com.music.common.code.MusicCategory;
 import com.music.common.comment.domain.Comment;
 import com.music.common.comment.domain.CommentRepository;
 import com.music.common.support.BaseServiceTest;
@@ -50,17 +51,17 @@ public class DomainCommentServiceTest extends BaseServiceTest {
 
     @BeforeEach
     void setUp() {
-         user = userRepository.save(UserFixture.create());
+        user = userRepository.save(UserFixture.create());
 
         attachment = attachmentRepository.save(AttachmentFixture.create());
 
-        board = boardRepository.save(boardService.create(
-                user.getId(),
-                attachment.getId(),
+        board = boardRepository.save(Board.create(
+                user,
+                AttachmentFixture.create(),
                 "title",
                 "description",
                 "songTitle",
-                EDM
+                MusicCategory.ROCK
         ));
 
         //board = boardRepository.save(BoardFixture.create());
@@ -77,7 +78,6 @@ public class DomainCommentServiceTest extends BaseServiceTest {
     @Test
     void 게시글_댓글_수정_성공() {
         Comment comment = commentService.create(board.getId(), user.getId(), "comment");
-
         commentService.update(comment.getId(), user.getId(), "updateComment");
 
         assertThat(comment.getComment()).isEqualTo("updateComment");
@@ -86,7 +86,6 @@ public class DomainCommentServiceTest extends BaseServiceTest {
     @Test
     void 게시글_댓글_수정_실패__작성자가_아님() {
         Comment comment = commentService.create(board.getId(), user.getId(), "comment");
-
         User fakeUser = userRepository.save(UserFixture.create());
 
         assertThatActorValidateCustomException().isThrownBy(() -> commentService.update(comment.getId(), fakeUser.getId(), "updatedComment"));
