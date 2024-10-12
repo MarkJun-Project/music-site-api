@@ -5,6 +5,7 @@ import com.music.common.attachment.domain.AttachmentRepository;
 import com.music.common.board.domain.Board;
 import com.music.common.board.domain.BoardRepository;
 import com.music.common.board.service.BoardService;
+import com.music.common.code.MusicCategory;
 import com.music.common.comment.domain.Comment;
 import com.music.common.comment.domain.CommentRepository;
 import com.music.common.support.BaseServiceTest;
@@ -48,20 +49,18 @@ public class DomainCommentServiceTest extends BaseServiceTest {
 
     @BeforeEach
     void setUp() {
-         user = userRepository.save(UserFixture.create());
+        user = userRepository.save(UserFixture.create());
 
         attachment = attachmentRepository.save(AttachmentFixture.create());
 
-        board = boardRepository.save(boardService.create(
-                user.getId(),
-                attachment.getId(),
+        board = boardRepository.save(Board.create(
+                user,
+                AttachmentFixture.create(),
                 "title",
                 "description",
                 "songTitle",
-                EDM
+                MusicCategory.ROCK
         ));
-
-        //board = boardRepository.save(BoardFixture.create());
     }
 
     @Test
