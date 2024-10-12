@@ -10,7 +10,8 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.music.common.support.Preconditions.check;
+import static com.music.common.support.ErrorCode.*;
+import static com.music.common.support.Preconditions.validate;
 
 @Service
 @Transactional
@@ -23,7 +24,7 @@ public class DomainMusicScoreService implements MusicScoreService{
 
     @Override
     public MusicScore create(Long userId, Long boardId, Score score) {
-        check(!musicScoreRepository.existsByUserIdAndBoardId(userId,boardId), "이미 평가한 게시글입니다.");
+        validate(!musicScoreRepository.existsByUserIdAndBoardId(userId,boardId), BOARD_ALREADY_EVALUATED);
 
         val user = userRepository.findById(userId).orElseThrow();
         val board = boardRepository.findById(boardId).orElseThrow();

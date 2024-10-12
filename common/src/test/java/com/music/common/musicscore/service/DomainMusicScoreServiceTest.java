@@ -6,6 +6,8 @@ import com.music.common.code.MusicCategory;
 import com.music.common.musicscore.domain.MusicScore;
 import com.music.common.musicscore.domain.Score;
 import com.music.common.support.BaseServiceTest;
+import com.music.common.support.CustomException;
+import com.music.common.support.ErrorCode;
 import com.music.common.user.domain.User;
 import com.music.common.user.domain.UserRepository;
 import fixtures.AttachmentFixture;
@@ -55,8 +57,8 @@ class DomainMusicScoreServiceTest extends BaseServiceTest {
 
         // then
         assertThat(musicScore.getId()).isNotNull();
-        assertThat(musicScore.getUser()).isEqualTo(user);
-        assertThat(musicScore.getBoard()).isEqualTo(board);
+        assertThat(musicScore.getUser().getId()).isEqualTo(user.getId());
+        assertThat(musicScore.getBoard().getId()).isEqualTo(board.getId());
         assertThat(musicScore.getScore()).isEqualTo(three);
     }
 
@@ -67,8 +69,8 @@ class DomainMusicScoreServiceTest extends BaseServiceTest {
         musicScoreService.create(user.getId(), board.getId(), three);
 
         // when & then
-        assertThatIllegalStateException()
-                .isThrownBy(() -> musicScoreService.create(user.getId(), board.getId(), three))
-                .withMessage("이미 평가한 게시글입니다.");
+        assertThatThrownBy(() -> musicScoreService.create(user.getId(), board.getId(), three))
+                .isInstanceOf(CustomException.class)
+                .hasFieldOrPropertyWithValue("errorCode", ErrorCode.BOARD_ALREADY_EVALUATED);
     }
 }
