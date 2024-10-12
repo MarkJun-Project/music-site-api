@@ -55,13 +55,14 @@ public class DomainCommentServiceTest extends BaseServiceTest {
 
         attachment = attachmentRepository.save(AttachmentFixture.create());
 
-        board = boardRepository.save(Board.create(
-                user,
-                AttachmentFixture.create(),
-                "title",
-                "description",
-                "songTitle",
-                MusicCategory.ROCK
+        board = boardRepository.save(
+                Board.create(
+                        user,
+                        attachment,
+                        "title",
+                        "description",
+                        "songTitle",
+                        EDM
         ));
     }
 
