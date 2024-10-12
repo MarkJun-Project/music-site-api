@@ -38,4 +38,8 @@ public class Likes extends BaseEntity {
 
         return new Likes(user, board);
     }
+
+    public boolean isUser(User user) {
+        return this.user == user;
+    }
 }

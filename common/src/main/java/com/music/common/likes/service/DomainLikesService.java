@@ -1,5 +1,6 @@
 package com.music.common.likes.service;
 
+import com.music.common.board.domain.Board;
 import com.music.common.board.domain.BoardRepository;
 import com.music.common.likes.domain.Likes;
 import com.music.common.likes.domain.LikesRepository;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.music.common.support.ErrorCode.*;
-import static com.music.common.support.Preconditions.validate;
+import static com.music.common.support.Preconditions.*;
 
 @Service
 @Transactional
@@ -31,5 +32,18 @@ public class DomainLikesService implements LikesService {
         val likes = Likes.create(user, board);
 
         return likesRepository.save(likes);
+    }
+
+    @Override
+    public void delete(Long likesId, Long userId) {
+        val likes = likesRepository.findById(likesId).orElseThrow();
+        val user = userRepository.findById(userId).orElseThrow();
+
+        actorValidate(likes.isUser(user));
+
+        likesRepository.delete(likes);
+
+        Board board = boardRepository.findById(likes.getBoard().getId()).orElseThrow();
+        board.getLikes().remove(likes);
     }
 }
