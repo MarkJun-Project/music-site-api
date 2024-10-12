@@ -63,8 +63,6 @@ public class DomainCommentServiceTest extends BaseServiceTest {
                 "songTitle",
                 MusicCategory.ROCK
         ));
-
-        //board = boardRepository.save(BoardFixture.create());
     }
 
     @Test
