@@ -13,7 +13,8 @@ public enum ErrorCode {
     NOT_EXISTED_MEMBER("error.member.not.existed"),
     ALREADY_EXISTED_MEMBER("error.member.already.existed"),
     ANOTHER_EXISTED_MEMBER("error.member.another.existed"),
-    NOT_ALLOWED_AS_LEADER("error.member.not.allowed.as.leader");
+    NOT_ALLOWED_AS_LEADER("error.member.not.allowed.as.leader"),
+    ALREADY_LIKED("error.like.already.existed");
 
     private final String message;
 }

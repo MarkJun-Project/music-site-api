@@ -9,6 +9,9 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.music.common.support.ErrorCode.*;
+import static com.music.common.support.Preconditions.validate;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -19,9 +22,11 @@ public class DomainLikesService implements LikesService {
     private final LikesRepository likesRepository;
 
     @Override
-    public Likes create(Long userId, Long BoardId) {
+    public Likes create(Long userId, Long boardId) {
+        validate(!likesRepository.existsByUserIdAndBoardId(userId, boardId), ALREADY_LIKED);
+
         val user = userRepository.findById(userId).orElseThrow();
-        val board = boardRepository.findById(BoardId).orElseThrow();
+        val board = boardRepository.findById(boardId).orElseThrow();
 
         val likes = Likes.create(user, board);
 
