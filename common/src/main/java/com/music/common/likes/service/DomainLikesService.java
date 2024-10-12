@@ -42,8 +42,5 @@ public class DomainLikesService implements LikesService {
         actorValidate(likes.isUser(user));
 
         likesRepository.delete(likes);
-
-        Board board = boardRepository.findById(likes.getBoard().getId()).orElseThrow();
-        board.getLikes().remove(likes);
     }
 }

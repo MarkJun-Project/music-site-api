@@ -93,7 +93,6 @@ class DomainLikesServiceTest extends BaseServiceTest {
 
         // then
         assertThat(likesRepository.findById(likes.getId()).isEmpty()).isTrue();
-        assertThat(board.getLikes().contains(likes)).isFalse();
     }
 
     @Test
