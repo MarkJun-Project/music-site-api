@@ -33,4 +33,14 @@ public class DomainCommentService implements CommentService {
         return commentRepository.save(Comment.createComment(user, board, comment));
     }
 
+    @Override
+    public void update(Long commentId, Long userId, String content) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
+
+        actorValidate(comment.isUser(user));
+
+        comment.update(content);
+    }
+
 }
