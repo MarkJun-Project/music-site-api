@@ -22,6 +22,8 @@ import static java.util.Objects.nonNull;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends BaseEntity {
 
+    public static final String DIR_NAME = "Board";
+
     @JoinColumn(name = "USER_ID", nullable = false)
     @ManyToOne
     private User user;
