@@ -35,10 +35,9 @@ public class DomainCommentServiceTest extends BaseServiceTest {
     @Autowired
     private BoardService boardService;
 
-
     @Autowired
     private UserRepository userRepository;
-//
+
     @Autowired
     private BoardRepository boardRepository;
 
