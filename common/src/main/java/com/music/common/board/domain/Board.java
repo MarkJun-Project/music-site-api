@@ -73,4 +73,13 @@ public class Board extends BaseEntity {
     public void addLikes(Likes likes) {
         this.likes.add(likes);
     }
+
+    public boolean isUser(User user) {
+        return this.user == user;
+    }
+
+    public void update(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
 }

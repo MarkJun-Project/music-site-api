@@ -10,6 +10,8 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.music.common.support.Preconditions.*;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -18,7 +20,6 @@ public class DomainBoardService implements BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final AttachmentRepository attachmentRepository;
-
 
     @Override
     public Board create(
@@ -30,5 +31,15 @@ public class DomainBoardService implements BoardService {
         val board = Board.create(user, attachment, title, description, songTitle, category);
 
         return boardRepository.save(board);
+    }
+
+    @Override
+    public void update(Long boardId, Long userId, String title, String description) {
+        val board = boardRepository.findById(boardId).orElseThrow();
+        val user = userRepository.findById(userId).orElseThrow();
+
+        actorValidate(board.isUser(user));
+
+        board.update(title, description);
     }
 }

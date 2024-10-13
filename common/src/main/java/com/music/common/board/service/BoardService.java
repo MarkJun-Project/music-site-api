@@ -5,4 +5,5 @@ import com.music.common.code.MusicCategory;
 
 public interface BoardService {
     Board create(Long userId, Long attachmentId, String title, String description, String songTitle, MusicCategory category);
+    void update(Long boardId, Long userId, String title, String description);
 }
