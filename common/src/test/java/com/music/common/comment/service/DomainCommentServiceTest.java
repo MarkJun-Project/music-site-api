@@ -70,6 +70,8 @@ public class DomainCommentServiceTest extends BaseServiceTest {
     void 게시글_댓글_생성_성공() {
         Comment comment = commentService.create(board.getId(), user.getId(), "comment");
 
+        assertThat(board.getId()).isNotNull();
+        assertThat(user.getId()).isNotNull();
         assertThat(comment.getId()).isNotNull();
         assertThat(comment.getComment()).isEqualTo("comment");
     }
