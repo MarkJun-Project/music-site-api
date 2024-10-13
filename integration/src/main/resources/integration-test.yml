@@ -10,4 +10,4 @@ spring:
 ---
 spring:
   file_upload:
-    path: "${FILE_STORAGE_PATH}:/upload"
+    path: "${FILE_STORAGE_PATH:/upload}"
