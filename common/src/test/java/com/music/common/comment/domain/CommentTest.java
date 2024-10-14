@@ -8,10 +8,12 @@ import fixtures.UserFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static com.music.common.comment.domain.CommentStatus.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.params.provider.EnumSource.Mode.*;
 
 class CommentTest {
     private User user;
@@ -37,7 +39,7 @@ class CommentTest {
         assertThat(comment.getUser()).isEqualTo(user);
         assertThat(comment.getBoard()).isEqualTo(board);
         assertThat(comment.getComment()).isEqualTo(content);
-        assertThat(comment.getStatus()).isEqualTo(CommentStatus.CREATED);
+        assertThat(comment.getStatus()).isEqualTo(CREATED);
     }
 
     @Test
@@ -128,4 +130,26 @@ class CommentTest {
         assertThatIllegalArgumentException().isThrownBy(() -> comment.update(nullContent));
     }
 
+    @Test
+    void 댓글_삭제_성공(){
+        //given
+        String content = "This is a test comment.";
+        Comment comment = Comment.createComment(user, board, content);
+
+        // When
+        comment.delete();
+
+        assertThat(comment.getStatus()).isEqualTo(DELETED);
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = CommentStatus.class, names = {"DELETED"}, mode = INCLUDE)
+    void 댓글_삭제_실패_이미_삭제된_상태(CommentStatus status){
+        String content = "This is a test comment.";
+        Comment comment = Comment.createComment(user, board, content);
+
+        comment.setStatus(status);
+
+        assertThatIllegalStateException().isThrownBy(() -> comment.delete());
+    }
 }
