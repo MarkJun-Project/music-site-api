@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Component
-@Profile("test")
+@Profile({"local", "default"})
 public class MockFileStore implements FileStore{
 
     @Override

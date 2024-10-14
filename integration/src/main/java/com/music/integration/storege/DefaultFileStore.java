@@ -14,7 +14,7 @@ import java.util.UUID;
 import static com.music.common.support.Preconditions.require;
 
 @Component
-@Profile("prod")
+@Profile({"dev", "prod"})
 public class DefaultFileStore implements FileStore{
     @Value("${spring.file_upload.path}")
     private String filePath;

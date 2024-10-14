@@ -1,6 +1,5 @@
 package com.music.core.service.board;
 
-import com.music.common.attachment.domain.Attachment;
 import com.music.common.board.domain.Board;
 import com.music.common.board.domain.BoardRepository;
 import com.music.common.code.MusicCategory;
@@ -11,13 +10,11 @@ import fixtures.UserFixture;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test")
 class DefaultBoardAppServiceTest extends BaseServiceTest {
 
     @Autowired
