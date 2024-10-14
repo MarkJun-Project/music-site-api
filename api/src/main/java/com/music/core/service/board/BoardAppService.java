@@ -1,8 +1,8 @@
 package com.music.core.service.board;
 
-import com.music.integration.storege.UploadFile;
+import com.music.common.code.MusicCategory;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface BoardAppService {
-    UploadFile fileUpload(MultipartFile multipartFile);
+    void create(Long userId, String title, String description, String songTitle, MusicCategory category, MultipartFile multipartFile);
 }
