@@ -2,7 +2,7 @@
 
 ---
 
-![logo](/md/logo.PNG)
+![logo](/md/logo.png)
 
 ---
 
