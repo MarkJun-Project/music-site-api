@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.music.common.support.ErrorCode.*;
+import static com.music.common.support.Preconditions.actorValidate;
 import static com.music.common.support.Preconditions.validate;
 
 @Service
@@ -29,5 +30,15 @@ public class DomainFollowService implements FollowService {
         val follow = Follow.create(follower, followee);
 
         return followRepository.save(follow);
+    }
+
+    @Override
+    public void delete(Long followerId, Long followId) {
+        val follower = userRepository.findById(followerId).orElseThrow();
+        val follow = followRepository.findById(followId).orElseThrow();
+
+        actorValidate(follow.isUser(follower));
+
+        followRepository.delete(follow);
     }
 }

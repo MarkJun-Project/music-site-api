@@ -38,4 +38,8 @@ public class Follow extends BaseEntity {
 
         return new Follow(follower, followee);
     }
+
+    public boolean isUser(User follower) {
+        return this.follower == follower;
+    }
 }
