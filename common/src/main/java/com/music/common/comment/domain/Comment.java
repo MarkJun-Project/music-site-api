@@ -7,13 +7,14 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.logging.log4j.util.Strings;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.music.common.support.Preconditions.actorValidate;
-import static com.music.common.support.Preconditions.require;
+import static com.music.common.comment.domain.CommentStatus.CAN_DELETE_STATUS;
+import static com.music.common.support.Preconditions.*;
 import static java.util.Objects.nonNull;
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
@@ -36,6 +37,7 @@ public class Comment extends BaseEntity {
     @Column(name = "COMMENT", nullable = false)
     private String comment;
 
+    @Setter
     @Column(name = "COMMENT_STATUS", nullable = false)
     @Enumerated(EnumType.STRING)
     private CommentStatus status = CommentStatus.CREATED;
@@ -89,5 +91,11 @@ public class Comment extends BaseEntity {
         require(Strings.isNotBlank(comment));
 
         this.comment = comment;
+    }
+
+    public void delete() {
+        check(CAN_DELETE_STATUS.contains(status));
+
+        this.status = CommentStatus.DELETED;
     }
 }
