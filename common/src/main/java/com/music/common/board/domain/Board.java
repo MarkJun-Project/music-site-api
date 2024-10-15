@@ -14,6 +14,7 @@ import org.apache.logging.log4j.util.Strings;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.music.common.support.Preconditions.check;
 import static com.music.common.support.Preconditions.require;
 import static java.util.Objects.nonNull;
 
@@ -83,5 +84,11 @@ public class Board extends BaseEntity {
     public void update(String title, String description) {
         this.title = title;
         this.description = description;
+    }
+
+    public void delete() {
+        check(BoardStatus.CREATED == this.status);
+
+        this.status = BoardStatus.DELETED;
     }
 }
