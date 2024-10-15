@@ -2,6 +2,7 @@ package com.music.integration.storege;
 
 import com.music.integration.support.RuntimeIOException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 import static com.music.common.support.Preconditions.require;
 
 @Component
+@Profile({"dev", "prod"})
 public class DefaultFileStore implements FileStore{
     @Value("${spring.file_upload.path}")
     private String filePath;
