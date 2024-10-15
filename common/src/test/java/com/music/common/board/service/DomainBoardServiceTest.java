@@ -4,6 +4,7 @@ import com.music.common.attachment.domain.Attachment;
 import com.music.common.attachment.domain.AttachmentRepository;
 import com.music.common.board.domain.Board;
 import com.music.common.board.domain.BoardRepository;
+import com.music.common.board.domain.BoardStatus;
 import com.music.common.support.BaseServiceTest;
 import com.music.common.user.domain.User;
 import com.music.common.user.domain.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static com.music.common.code.MusicCategory.EDM;
 import static com.music.common.support.ExceptionTest.assertThatActorValidateCustomException;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 class DomainBoardServiceTest extends BaseServiceTest {
 
@@ -106,5 +108,62 @@ class DomainBoardServiceTest extends BaseServiceTest {
         // then
         assertThat(updatedBoard.getTitle()).isEqualTo("changedTitle");
         assertThat(updatedBoard.getDescription()).isEqualTo("changedDescription");
+    }
+
+    @Test
+    void 게시글_삭제_실패_이미_삭제됨() {
+        // given
+        Board board = boardService.create(
+                user.getId(),
+                attachment.getId(),
+                "title",
+                "description",
+                "songTitle",
+                EDM
+        );
+        boardService.delete(board.getId(), user.getId());
+
+        // when & then
+        assertThatIllegalStateException()
+                .isThrownBy(() -> boardService.delete(board.getId(), user.getId()));
+    }
+
+    @Test
+    void 게시글_삭제_실패_작성한_유저가_아님() {
+        // given
+        Board board = boardService.create(
+                user.getId(),
+                attachment.getId(),
+                "title",
+                "description",
+                "songTitle",
+                EDM
+        );
+        User fakeUser = userRepository.save(UserFixture.create());
+
+        // when & then
+        assertThatActorValidateCustomException()
+                .isThrownBy(() -> boardService.delete(board.getId(), fakeUser.getId()));
+    }
+
+    @Test
+    void 게시글_삭제_성공() {
+        // given
+        Board board = boardService.create(
+                user.getId(),
+                attachment.getId(),
+                "title",
+                "description",
+                "songTitle",
+                EDM
+        );
+
+        // when
+        boardService.delete(board.getId(), user.getId());
+        Board deletedBoard = boardRepository.findById(board.getId()).orElseThrow();
+
+        // then
+        assertThat(deletedBoard).isNotNull();
+        assertThat(deletedBoard.getStatus()).isEqualTo(BoardStatus.DELETED);
     }
 }
