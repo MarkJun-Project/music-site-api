@@ -15,7 +15,8 @@ public enum ErrorCode {
     ANOTHER_EXISTED_MEMBER("error.member.another.existed"),
     NOT_ALLOWED_AS_LEADER("error.member.not.allowed.as.leader"),
     BOARD_ALREADY_EVALUATED("error.board.already.evaluated"),
-    ALREADY_LIKED("error.like.already.existed");
+    ALREADY_LIKED("error.like.already.existed"),
+    ALREADY_FOLLOW("error.follow.already.existed");
 
     private final String message;
 }
