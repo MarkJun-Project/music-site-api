@@ -23,7 +23,9 @@ public class DefaultBoardAppService implements BoardAppService{
     @Override
     public void create(Long userId, String title, String description, String songTitle, MusicCategory category, MultipartFile multipartFile) {
         val uploadFile = fileStore.upload(multipartFile, Board.DIR_NAME);
+
         val attachment = attachmentService.create(uploadFile.getFileUrl(), uploadFile.getFileName(), uploadFile.getOriginFileName());
+
         boardService.create(userId, attachment.getId(), title, description, songTitle, category);
     }
 }
