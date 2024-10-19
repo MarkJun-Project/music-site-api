@@ -42,4 +42,14 @@ public class DomainBoardService implements BoardService {
 
         board.update(title, description);
     }
+
+    @Override
+    public void delete(Long BoardId, Long userId) {
+        val board = boardRepository.findById(BoardId).orElseThrow();
+        val user = userRepository.findById(userId).orElseThrow();
+
+        actorValidate(board.isUser(user));
+
+        board.delete();
+    }
 }
