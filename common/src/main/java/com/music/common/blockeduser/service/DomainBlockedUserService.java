@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.music.common.support.ErrorCode.*;
+import static com.music.common.support.Preconditions.actorValidate;
 import static com.music.common.support.Preconditions.validate;
 
 @Service
@@ -30,5 +31,15 @@ public class DomainBlockedUserService implements BlockedUserService{
         val block = BlockedUser.create(blocker, blocked);
 
         return blockedUserRepository.save(block);
+    }
+
+    @Override
+    public void delete(Long blockId, Long blockedId) {
+        val blocker = userRepository.findById(blockedId).orElseThrow();
+        val block = blockedUserRepository.findById(blockId).orElseThrow();
+
+        actorValidate(block.isUser(blocker));
+
+        blockedUserRepository.delete(block);
     }
 }
