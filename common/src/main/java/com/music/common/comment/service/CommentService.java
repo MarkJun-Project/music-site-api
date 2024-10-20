@@ -7,4 +7,5 @@ public interface CommentService {
 
     void update(Long commentId, Long userId, String comment);
 
+    void delete(Long commentId, Long userId);
 }

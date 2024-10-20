@@ -43,4 +43,14 @@ public class DomainCommentService implements CommentService {
         comment.update(content);
     }
 
+    @Override
+    public void delete(Long commentId, Long userId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow();
+
+        actorValidate(comment.isUser(user));
+
+        comment.delete();
+    }
+
 }
