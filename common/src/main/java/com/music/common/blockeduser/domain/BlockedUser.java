@@ -38,4 +38,8 @@ public class BlockedUser extends BaseEntity {
 
         return new BlockedUser(blocker, blocked);
     }
+
+    public boolean isUser(User blocker) {
+        return this.blocker == blocker;
+    }
 }
