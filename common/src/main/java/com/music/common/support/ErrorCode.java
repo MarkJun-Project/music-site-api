@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
+    ADMIN_SERVICE_ID_ALREADY_EXISTS("error.admin.service.id.already.exists"),
     BLOCK_ALREADY_EXISTED("error.block.already.existed"),
     SYSTEM_ERROR("system.error"),
     ACTOR_VALIDATE("error.actor.validate"),
