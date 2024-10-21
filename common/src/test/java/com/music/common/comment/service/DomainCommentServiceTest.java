@@ -8,6 +8,7 @@ import com.music.common.board.service.BoardService;
 import com.music.common.code.MusicCategory;
 import com.music.common.comment.domain.Comment;
 import com.music.common.comment.domain.CommentRepository;
+import com.music.common.comment.domain.CommentStatus;
 import com.music.common.support.BaseServiceTest;
 import com.music.common.user.domain.User;
 import com.music.common.user.domain.UserRepository;
@@ -90,4 +91,25 @@ public class DomainCommentServiceTest extends BaseServiceTest {
 
         assertThatActorValidateCustomException().isThrownBy(() -> commentService.update(comment.getId(), fakeUser.getId(), "updatedComment"));
     }
+
+    @Test
+    void 게시글_댓글_삭제_성공(){
+        Comment comment = commentService.create(board.getId(), user.getId(), "comment");
+
+        commentService.delete(comment.getId(), user.getId());
+
+        Comment findComment = commentRepository.findAll().get(0);
+
+        assertThat(findComment.getStatus()).isEqualTo(CommentStatus.DELETED);
+    }
+
+    @Test
+    void 게시글_댓글_삭제_실패__작성자가_아님(){
+        Comment comment = commentService.create(board.getId(), user.getId(), "comment");
+        User fakeUser = userRepository.save(UserFixture.create());
+
+        assertThatActorValidateCustomException().isThrownBy(() -> commentService.update(comment.getId(), fakeUser.getId(), "updatedComment"));
+    }
+
+
 }
